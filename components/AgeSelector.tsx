@@ -99,15 +99,17 @@ export function AgeSelector({ value, onChange, onNext, onBack }: AgeSelectorProp
             triggerHapticFeedback()
           }}
         >
-          {ages.map((age) => (
+          {ages.map((age, index) => {
+            const distance = Math.abs(index - selectedIndex)
+            const opacity = Math.max(1 - distance * 0.3, 0.2)
+            const scale = Math.max(1 - distance * 0.1, 0.7)
+            
+            return (
             <motion.div
               key={age}
               className="h-12 flex items-center justify-center cursor-pointer"
-              style={{
-                y: 0, // Removed the useTransform here
-                opacity: 1 - Math.min(Math.abs(transformY + ages.indexOf(age) * itemHeight) / (itemHeight * 3), 1), //Simplified opacity calculation
-                scale: 1 - Math.min(Math.abs(transformY + ages.indexOf(age) * itemHeight) / (itemHeight * 5), 0.4), //Simplified scale calculation
-              }}
+              animate={{ opacity, scale }}
+              transition={{ duration: 0.2 }}
             >
               <span
                 className={`text-2xl transition-all ${
@@ -117,7 +119,8 @@ export function AgeSelector({ value, onChange, onNext, onBack }: AgeSelectorProp
                 {age}
               </span>
             </motion.div>
-          ))}
+            )
+          })}
         </motion.div>
       </div>
 
