@@ -6,8 +6,8 @@ import type React from "react" // Import React
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "SnowConnect",
-  description: "Conecta con otros riders en la nieve",
+  title: "Way2Campus",
+  description: "Track your college bus and stay updated",
     generator: 'v0.app'
 }
 
