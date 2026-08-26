@@ -31,15 +31,15 @@ export function Notifications({ onClose, setNotificationCount, onAcceptFriendReq
       id: 1,
       type: "friend_request",
       user: { name: "Ana García", avatar: "/placeholder.svg" },
-      content: "Te ha enviado una solicitud de amistad",
-      timestamp: "Hace 5 minutos",
+      content: "Sent you a friend request",
+      timestamp: "5 minutes ago",
     },
     {
       id: 2,
       type: "message",
       user: { name: "Carlos Rodríguez", avatar: "/placeholder.svg" },
-      content: "¿Quieres unirte a nuestro grupo para esquiar mañana?",
-      timestamp: "Hace 20 minutos",
+      content: "Do you want to join our group to ski tomorrow?",
+      timestamp: "20 minutes ago",
     },
   ])
 
@@ -115,7 +115,7 @@ export function Notifications({ onClose, setNotificationCount, onAcceptFriendReq
                       onClick={() => handleNotificationAction(notification.id, "accept")}
                     >
                       <MessageCircle className="h-4 w-4 mr-1" />
-                      Responder
+                      Reply
                     </Button>
                   )}
                 </div>
