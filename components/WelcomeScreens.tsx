@@ -3,7 +3,7 @@
 import React, { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import { Snowflake, Users, Mountain, ArrowRight } from "lucide-react"
+import { Bus, MapPin, Bell, ArrowRight } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { MouseMoveEffect } from "./MouseMoveEffect"
@@ -14,21 +14,21 @@ const screens = [
     title: "Welcome to Way2Campus",
     description: "Track your college bus and stay updated",
     color: "bg-zinc-900",
-    icon: Snowflake,
+    icon: Bus,
   },
   {
     id: 2,
     title: "Never Miss Your Bus",
     description: "Get real-time locations and alerts for buses 1-55",
     color: "bg-zinc-900",
-    icon: Users,
+    icon: MapPin,
   },
   {
     id: 3,
     title: "Instant Driver Updates",
     description: "Receive instant notifications for delays, punctures, or traffic",
     color: "bg-zinc-900",
-    icon: Mountain,
+    icon: Bell,
   },
 ]
 
