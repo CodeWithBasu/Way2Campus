@@ -11,22 +11,22 @@ import { MouseMoveEffect } from "./MouseMoveEffect"
 const screens = [
   {
     id: 1,
-    title: "Welcome to SnowConnect",
-    description: "Find companions for your snow adventures",
+    title: "Welcome to Way2Campus",
+    description: "Track your college bus and stay updated",
     color: "bg-zinc-900",
     icon: Snowflake,
   },
   {
     id: 2,
-    title: "Connect with riders",
-    description: "Meet riders of your level and style at your favorite ski resort",
+    title: "Never Miss Your Bus",
+    description: "Get real-time locations and alerts for buses 1-55",
     color: "bg-zinc-900",
     icon: Users,
   },
   {
     id: 3,
-    title: "Share the mountain",
-    description: "Organize trips and improve your technique with other riders",
+    title: "Instant Driver Updates",
+    description: "Receive instant notifications for delays, punctures, or traffic",
     color: "bg-zinc-900",
     icon: Mountain,
   },
