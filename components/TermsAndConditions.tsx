@@ -18,7 +18,7 @@ export function TermsAndConditions({ onClose }: { onClose: () => void }) {
         <Card className="bg-zinc-900 border-zinc-800">
           <CardHeader className="border-b border-zinc-800">
             <div className="flex items-center justify-between">
-              <CardTitle className="text-xl text-white">Términos y Condiciones</CardTitle>
+              <CardTitle className="text-xl text-white">About Way2Campus</CardTitle>
               <Button variant="ghost" size="icon" onClick={onClose} className="text-zinc-400 hover:text-white">
                 <X className="h-4 w-4" />
               </Button>
@@ -27,47 +27,41 @@ export function TermsAndConditions({ onClose }: { onClose: () => void }) {
           <CardContent className="p-0">
             <ScrollArea className="h-[60vh] p-6">
               <div className="space-y-4 text-zinc-300">
-                <h2 className="text-lg font-semibold text-white">1. Aceptación de los Términos</h2>
+                <h2 className="text-lg font-semibold text-white">1. Introduction</h2>
                 <p>
-                  Al utilizar la aplicación SnowConnect, aceptas estos términos y condiciones en su totalidad. Si no
-                  estás de acuerdo con estos términos, por favor, no uses la aplicación.
+                  Welcome to Way2Campus, the official college bus tracking application designed exclusively for students and drivers of DRIEMS UNIVERSITY.
                 </p>
 
-                <h2 className="text-lg font-semibold text-white">2. Uso de la Aplicación</h2>
+                <h2 className="text-lg font-semibold text-white">2. App Usage</h2>
                 <p>
-                  SnowConnect es una plataforma para conectar a entusiastas de los deportes de invierno. No debes
-                  utilizar la aplicación para fines ilegales o no autorizados.
+                  Way2Campus is intended to provide real-time location updates and status notifications for the DRIEMS UNIVERSITY bus fleet (Buses 1 through 55).
+                  Drivers are expected to report their accurate status, and students must use the information responsibly for commuting purposes.
                 </p>
 
-                <h2 className="text-lg font-semibold text-white">3. Privacy</h2>
+                <h2 className="text-lg font-semibold text-white">3. Privacy & Location Data</h2>
                 <p>
-                  Respetamos tu privacidad y protegemos tus datos personales. Consulta nuestra Política de Privacy
-                  para obtener más información sobre cómo recopilamos y utilizamos tus datos.
+                  When you use the app as a driver, your location is shared to provide real-time ETAs to students. We respect your privacy and this data is strictly limited to active bus routes.
+                  Student data is kept confidential and is not shared with any third parties.
                 </p>
 
-                <h2 className="text-lg font-semibold text-white">4. Contenido del Usuario</h2>
+                <h2 className="text-lg font-semibold text-white">4. User Responsibilities</h2>
                 <p>
-                  Eres responsable de todo el contenido que publiques en SnowConnect. No debes publicar contenido
-                  ofensivo, ilegal o que viole los derechos de otros usuarios.
+                  You are responsible for the information provided in the app. Misuse of the emergency or delay notification features by drivers may result in administrative action by DRIEMS UNIVERSITY authorities.
                 </p>
 
-                <h2 className="text-lg font-semibold text-white">5. Seguridad</h2>
+                <h2 className="text-lg font-semibold text-white">5. Service Availability</h2>
                 <p>
-                  Aunque nos esforzamos por proporcionar una plataforma segura, no podemos garantizar la seguridad
-                  absoluta. Utiliza tu mejor juicio al interactuar con otros usuarios y compartir información.
+                  While we strive to ensure 100% uptime for Way2Campus, connectivity issues or GPS inaccuracies might occur. Always plan your commute with a slight buffer.
                 </p>
 
-                <h2 className="text-lg font-semibold text-white">6. Modificaciones</h2>
+                <h2 className="text-lg font-semibold text-white">6. Policy Updates</h2>
                 <p>
-                  Nos reservamos el derecho de modificar estos términos en cualquier momento. Te notificaremos sobre
-                  cambios significativos y tu uso continuado de la aplicación constituirá la aceptación de los nuevos
-                  términos.
+                  DRIEMS UNIVERSITY reserves the right to update these terms as new features are added to Way2Campus. Continued use of the app implies acceptance of any changes.
                 </p>
 
-                <h2 className="text-lg font-semibold text-white">7. Contacto</h2>
+                <h2 className="text-lg font-semibold text-white">7. Contact & Support</h2>
                 <p>
-                  Si tienes preguntas sobre estos términos, por favor contáctanos a través de la sección de Soporte en
-                  la aplicación.
+                  If you experience any issues or need to report a bug, please contact the DRIEMS UNIVERSITY transport administration through the Support section.
                 </p>
               </div>
             </ScrollArea>
