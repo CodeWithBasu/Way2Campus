@@ -3,6 +3,7 @@
 import { MapContainer, TileLayer, Marker } from "react-leaflet"
 import "leaflet/dist/leaflet.css"
 import L from "leaflet"
+import { useEffect } from "react"
 
 interface MapComponentProps {
   busNumber: string
@@ -12,6 +13,21 @@ interface MapComponentProps {
 const DRIEMS_COORDS = { lat: 20.5593, lng: 85.9328 }
 
 export default function MapComponent({ busNumber, liveLocation }: MapComponentProps) {
+  useEffect(() => {
+    // Add CSS for dark mode map tiles dynamically
+    const style = document.createElement("style")
+    style.innerHTML = `
+      .dark-map-tiles {
+        filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
+      }
+      .leaflet-container {
+        background: #1a1a1a !important;
+      }
+    `
+    document.head.appendChild(style)
+    return () => { document.head.removeChild(style) }
+  }, [])
+
   // Custom icon for DRIEMS
   const driemsIcon = L.divIcon({
     className: "custom-icon",
@@ -45,10 +61,11 @@ export default function MapComponent({ busNumber, liveLocation }: MapComponentPr
         style={{ height: "100%", width: "100%", zIndex: 0 }}
         zoomControl={false}
     >
-        {/* CartoDB Dark Matter tiles (Free, No API Key, beautiful dark mode) */}
+        {/* Standard OpenStreetMap tiles (100% Free, NO API Key) with CSS Dark Mode filter */}
         <TileLayer
-            url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-            attribution="&copy; OpenStreetMap contributors &copy; CARTO"
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution="&copy; OpenStreetMap contributors"
+            className="dark-map-tiles"
         />
         
         <Marker position={[DRIEMS_COORDS.lat, DRIEMS_COORDS.lng]} icon={driemsIcon} />
