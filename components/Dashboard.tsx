@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { UserProfile } from "./UserProfile"
-import { NearbyRiders } from "./NearbyRiders"
+import { StudentDashboard } from "./StudentDashboard"
 import { DriverDashboard } from "./DriverDashboard"
 import { Settings } from "./Settings"
 
@@ -44,7 +44,7 @@ export function Dashboard({ userData, onLogout }: DashboardProps) {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="dashboard" className="m-0 pb-16">
-          {user.role === "driver" ? <DriverDashboard userData={user} /> : <NearbyRiders />}
+          {user.role === "driver" ? <DriverDashboard userData={user} /> : <StudentDashboard userData={user} />}
         </TabsContent>
         <TabsContent value="profile" className="m-0 pb-16">
           <UserProfile
