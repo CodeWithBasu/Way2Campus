@@ -2,6 +2,7 @@ import clsx from "clsx"
 import { Bus, MapPin, BellRing, Navigation, ShieldCheck, Zap, Smartphone, Radio } from "lucide-react"
 import { FeatureHero } from "./FeatureHero"
 import HowItWorks from "@/components/ui/how-it-works"
+import FAQ from "@/components/ui/faq-monochrome"
 
 const way2CampusSteps = [
   {
@@ -92,6 +93,14 @@ export function LandingPage({ onStart }: LandingPageProps) {
             </div>
             <HowItWorks features={way2CampusSteps} />
         </section>
+
+        {/* FAQ Section */}
+        <FAQ />
+
+        {/* Simple Footer */}
+        <footer className="w-full border-t border-white/10 bg-[#0a0a0a] py-8 text-center text-zinc-500">
+            <p>© {new Date().getFullYear()} Way2Campus for DRIEMS University. All rights reserved.</p>
+        </footer>
         </div>
     )
 }
