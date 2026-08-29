@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { WelcomeScreens } from "../components/WelcomeScreens"
+import { LandingPage } from "@/components/LandingPage"
 import { Onboarding } from "../components/Onboarding"
 import { Dashboard } from "../components/Dashboard"
 import { locations, getRandomProfileImage } from "../utils/constants"
@@ -49,7 +49,7 @@ export default function Home() {
   }
 
   if (step === "welcome") {
-    return <WelcomeScreens onComplete={() => setStep("onboarding")} />
+    return <LandingPage onStart={() => setStep("onboarding")} />
   }
 
   if (step === "onboarding") {
