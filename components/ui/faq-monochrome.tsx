@@ -253,8 +253,8 @@ export default function FAQ() {
   const setCardGlow = (event: React.MouseEvent<HTMLLIElement>) => {
     const target = event.currentTarget;
     const rect = target.getBoundingClientRect();
-    target.style.setProperty("--faq-x", \`\${event.clientX - rect.left}px\`);
-    target.style.setProperty("--faq-y", \`\${event.clientY - rect.top}px\`);
+    target.style.setProperty("--faq-x", `${event.clientX - rect.left}px`);
+    target.style.setProperty("--faq-y", `${event.clientY - rect.top}px`);
   };
 
   const clearCardGlow = (event: React.MouseEvent<HTMLLIElement>) => {
@@ -264,7 +264,7 @@ export default function FAQ() {
   };
 
   return (
-    <div className={\`relative w-full overflow-hidden transition-colors duration-700 \${palette.surface}\`}>
+    <div className={`relative w-full overflow-hidden transition-colors duration-700 ${palette.surface}`}>
       <div className="absolute inset-0 z-0" style={{ background: palette.aurora }} />
       <div
         className="pointer-events-none absolute inset-0 z-0 opacity-80"
@@ -272,14 +272,14 @@ export default function FAQ() {
       />
 
       <section
-        className={\`relative z-10 mx-auto flex max-w-4xl flex-col gap-12 px-6 py-24 lg:max-w-5xl lg:px-12 \${
+        className={`relative z-10 mx-auto flex max-w-4xl flex-col gap-12 px-6 py-24 lg:max-w-5xl lg:px-12 ${
           hasEntered ? "faq1-fade--ready" : "faq1-fade"
-        }\`}
+        }`}
       >
         <div
-          className={\`faq1-intro \${introReady ? "faq1-intro--active" : ""} \${
+          className={`faq1-intro ${introReady ? "faq1-intro--active" : ""} ${
             theme === "light" ? "faq1-intro--light" : "faq1-intro--dark"
-          }\`}
+          }`}
         >
           <span className="faq1-intro__beam" aria-hidden="true" />
           <span className="faq1-intro__pulse" aria-hidden="true" />
@@ -290,10 +290,10 @@ export default function FAQ() {
 
         <header className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
           <div className="space-y-4">
-            <h1 className={\`text-4xl font-semibold leading-tight md:text-5xl \${palette.heading}\`}>
+            <h1 className={`text-4xl font-semibold leading-tight md:text-5xl ${palette.heading}`}>
               Got questions? <br/> We've got answers.
             </h1>
-            <p className={\`max-w-xl text-base \${palette.muted}\`}>
+            <p className={`max-w-xl text-base ${palette.muted}`}>
               Everything you need to know about using the live transit platform for DRIEMS University.
             </p>
           </div>
@@ -302,22 +302,22 @@ export default function FAQ() {
         <ul className="space-y-4">
           {faqs.map((item, index) => {
             const open = activeIndex === index;
-            const panelId = \`faq-panel-\${index}\`;
-            const buttonId = \`faq-trigger-\${index}\`;
+            const panelId = `faq-panel-${index}`;
+            const buttonId = `faq-trigger-${index}`;
 
             return (
               <li
                 key={item.question}
-                className={\`group relative overflow-hidden rounded-3xl border backdrop-blur-xl transition-all duration-500 hover:-translate-y-0.5 focus-within:-translate-y-0.5 \${palette.border} \${palette.panel} \${palette.shadow}\`}
+                className={`group relative overflow-hidden rounded-3xl border backdrop-blur-xl transition-all duration-500 hover:-translate-y-0.5 focus-within:-translate-y-0.5 ${palette.border} ${palette.panel} ${palette.shadow}`}
                 onMouseMove={setCardGlow}
                 onMouseLeave={clearCardGlow}
               >
                 <div
-                  className={\`pointer-events-none absolute inset-0 transition-opacity duration-500 \${
+                  className={`pointer-events-none absolute inset-0 transition-opacity duration-500 ${
                     open ? "opacity-100" : "opacity-0 group-hover:opacity-100"
-                  }\`}
+                  }`}
                   style={{
-                    background: \`radial-gradient(240px circle at var(--faq-x, 50%) var(--faq-y, 50%), \${palette.glow}, transparent 70%)\`,
+                    background: `radial-gradient(240px circle at var(--faq-x, 50%) var(--faq-y, 50%), ${palette.glow}, transparent 70%)`,
                   }}
                 />
 
@@ -331,15 +331,15 @@ export default function FAQ() {
                   className="relative flex w-full items-start gap-6 px-8 py-7 text-left transition-colors duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--faq-outline)]"
                 >
                   <span
-                    className={\`relative flex h-12 w-12 shrink-0 items-center justify-center rounded-full border transition-all duration-500 group-hover:scale-105 \${palette.iconRing} \${palette.iconSurface}\`}
+                    className={`relative flex h-12 w-12 shrink-0 items-center justify-center rounded-full border transition-all duration-500 group-hover:scale-105 ${palette.iconRing} ${palette.iconSurface}`}
                   >
                     <span
-                      className={\`pointer-events-none absolute inset-0 rounded-full border opacity-30 \${
+                      className={`pointer-events-none absolute inset-0 rounded-full border opacity-30 ${
                         palette.iconRing
-                      } \${open ? "animate-ping" : ""}\`}
+                      } ${open ? "animate-ping" : ""}`}
                     />
                     <svg
-                      className={\`relative h-5 w-5 transition-transform duration-500 \${palette.icon} \${open ? "rotate-45" : ""}\`}
+                      className={`relative h-5 w-5 transition-transform duration-500 ${palette.icon} ${open ? "rotate-45" : ""}`}
                       viewBox="0 0 24 24"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
@@ -351,12 +351,12 @@ export default function FAQ() {
 
                   <div className="flex flex-1 flex-col gap-4">
                     <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
-                      <h2 className={\`text-lg font-medium leading-tight sm:text-xl \${palette.heading}\`}>
+                      <h2 className={`text-lg font-medium leading-tight sm:text-xl ${palette.heading}`}>
                         {item.question}
                       </h2>
                       {item.meta && (
                         <span
-                          className={\`inline-flex w-fit items-center rounded-full border px-3 py-1 text-[10px] uppercase tracking-[0.35em] transition-opacity duration-300 sm:ml-auto \${palette.border} \${palette.muted}\`}
+                          className={`inline-flex w-fit items-center rounded-full border px-3 py-1 text-[10px] uppercase tracking-[0.35em] transition-opacity duration-300 sm:ml-auto ${palette.border} ${palette.muted}`}
                         >
                           {item.meta}
                         </span>
@@ -367,9 +367,9 @@ export default function FAQ() {
                       id={panelId}
                       role="region"
                       aria-labelledby={buttonId}
-                      className={\`overflow-hidden text-sm leading-relaxed transition-[max-height] duration-500 ease-out \${
+                      className={`overflow-hidden text-sm leading-relaxed transition-[max-height] duration-500 ease-out ${
                         open ? "max-h-64" : "max-h-0"
-                      } \${palette.muted}\`}
+                      } ${palette.muted}`}
                     >
                       <p className="pr-2 pt-2">
                         {item.answer}
