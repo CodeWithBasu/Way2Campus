@@ -1,10 +1,11 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Bus, MapPin, AlertCircle, AlertTriangle, CheckCircle2, Clock } from "lucide-react"
 import { MouseMoveEffect } from "./MouseMoveEffect"
+import { io, Socket } from "socket.io-client"
 
 interface DriverDashboardProps {
   userData: {
@@ -18,11 +19,63 @@ interface DriverDashboardProps {
 
 export function DriverDashboard({ userData }: DriverDashboardProps) {
   const [status, setStatus] = useState<string>("On Route")
+  const socketRef = useRef<Socket | null>(null)
+  const watchIdRef = useRef<number | null>(null)
+  const [gpsActive, setGpsActive] = useState(false)
 
-  const handleStatusUpdate = (newStatus: string) => {
+  useEffect(() => {
+    // Connect to Socket.IO server
+    socketRef.current = io()
+    
+    // Join the bus room
+    socketRef.current.emit("joinBus", userData.busNumber)
+
+    // Start tracking GPS location
+    if ("geolocation" in navigator) {
+      watchIdRef.current = navigator.geolocation.watchPosition(
+        (position) => {
+          setGpsActive(true)
+          if (socketRef.current) {
+            socketRef.current.emit("updateLocation", {
+              busNumber: userData.busNumber,
+              lat: position.coords.latitude,
+              lng: position.coords.longitude,
+              timestamp: position.timestamp,
+              speed: position.coords.speed
+            })
+          }
+        },
+        (error) => {
+          console.error("Error getting location:", error)
+          setGpsActive(false)
+        },
+        { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+      )
+    }
+
+    return () => {
+      if (watchIdRef.current !== null) {
+        navigator.geolocation.clearWatch(watchIdRef.current)
+      }
+      if (socketRef.current) {
+        socketRef.current.disconnect()
+      }
+    }
+  }, [userData.busNumber])
+
+  const handleStatusUpdate = (newStatus: string, type: string) => {
     setStatus(newStatus)
-    // In a real app, this would broadcast via WebSocket/API to the backend
-    alert(`Status updated to: ${newStatus}.\n\nStudents tracking Bus ${userData.busNumber} have been notified!`)
+    
+    if (socketRef.current) {
+      socketRef.current.emit("updateStatus", {
+        busNumber: userData.busNumber,
+        type: type,
+        title: `Bus ${userData.busNumber} Update`,
+        content: newStatus,
+        timestamp: new Date().toLocaleTimeString()
+      })
+      alert(`Status broadcasted: ${newStatus}`)
+    }
   }
 
   return (
@@ -48,7 +101,7 @@ export function DriverDashboard({ userData }: DriverDashboardProps) {
           
           <div className="grid grid-cols-1 gap-4">
             <Button
-              onClick={() => handleStatusUpdate("On Route / Normal")}
+              onClick={() => handleStatusUpdate("On Route / Normal", "status")}
               className="h-16 bg-zinc-900 border border-zinc-800 hover:border-green-500 hover:bg-green-500/10 text-white flex justify-start px-6 transition-all"
             >
               <CheckCircle2 className="h-6 w-6 text-green-500 mr-4" />
@@ -56,7 +109,7 @@ export function DriverDashboard({ userData }: DriverDashboardProps) {
             </Button>
 
             <Button
-              onClick={() => handleStatusUpdate("Heavy Traffic (Delay)")}
+              onClick={() => handleStatusUpdate("Heavy Traffic (Delay)", "delay")}
               className="h-16 bg-zinc-900 border border-zinc-800 hover:border-yellow-500 hover:bg-yellow-500/10 text-white flex justify-start px-6 transition-all"
             >
               <Clock className="h-6 w-6 text-yellow-500 mr-4" />
@@ -64,7 +117,7 @@ export function DriverDashboard({ userData }: DriverDashboardProps) {
             </Button>
 
             <Button
-              onClick={() => handleStatusUpdate("Puncture / Breakdown")}
+              onClick={() => handleStatusUpdate("Puncture / Breakdown", "emergency")}
               className="h-16 bg-zinc-900 border border-zinc-800 hover:border-orange-500 hover:bg-orange-500/10 text-white flex justify-start px-6 transition-all"
             >
               <AlertTriangle className="h-6 w-6 text-orange-500 mr-4" />
@@ -72,7 +125,7 @@ export function DriverDashboard({ userData }: DriverDashboardProps) {
             </Button>
 
             <Button
-              onClick={() => handleStatusUpdate("Emergency")}
+              onClick={() => handleStatusUpdate("Emergency", "emergency")}
               className="h-16 bg-zinc-900 border border-zinc-800 hover:border-red-500 hover:bg-red-500/10 text-white flex justify-start px-6 transition-all"
             >
               <AlertCircle className="h-6 w-6 text-red-500 mr-4" />
@@ -83,9 +136,13 @@ export function DriverDashboard({ userData }: DriverDashboardProps) {
 
         <section className="pt-8">
             <Card className="bg-zinc-900 border-zinc-800 p-6 text-center">
-                <MapPin className="h-8 w-8 text-[#CCFF00] mx-auto mb-4" />
+                <MapPin className={`h-8 w-8 mx-auto mb-4 ${gpsActive ? "text-green-500" : "text-zinc-600"}`} />
                 <h3 className="text-white font-medium mb-2">Location Broadcasting Live</h3>
-                <p className="text-zinc-400 text-sm">Your GPS location is being securely shared with students waiting for Bus {userData.busNumber}.</p>
+                <p className="text-zinc-400 text-sm">
+                  {gpsActive 
+                    ? `Your GPS location is being securely shared with students waiting for Bus ${userData.busNumber}.` 
+                    : "Waiting for GPS signal..."}
+                </p>
             </Card>
         </section>
       </div>

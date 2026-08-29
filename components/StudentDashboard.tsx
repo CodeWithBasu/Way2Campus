@@ -1,12 +1,13 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { MapPin, Bell, Bus, Map, Clock } from "lucide-react"
 import { RouteMap } from "./RouteMap"
 import { Notifications } from "./Notifications"
 import { MouseMoveEffect } from "./MouseMoveEffect"
+import { io, Socket } from "socket.io-client"
 
 interface StudentDashboardProps {
   userData: {
@@ -21,7 +22,33 @@ interface StudentDashboardProps {
 export function StudentDashboard({ userData }: StudentDashboardProps) {
   const [showMap, setShowMap] = useState(false)
   const [showNotifications, setShowNotifications] = useState(false)
-  const [notificationCount, setNotificationCount] = useState(1)
+  const [notificationCount, setNotificationCount] = useState(0)
+  const [liveStatus, setLiveStatus] = useState("On Route")
+  const socketRef = useRef<Socket | null>(null)
+  
+  // Custom hook for notifications could be extracted, keeping it here for simplicity
+  const [liveNotifications, setLiveNotifications] = useState<any[]>([])
+
+  useEffect(() => {
+    socketRef.current = io()
+    socketRef.current.emit("joinBus", userData.busNumber)
+
+    socketRef.current.on("statusUpdate", (data) => {
+      setLiveStatus(data.content)
+      setNotificationCount(prev => prev + 1)
+      setLiveNotifications(prev => [{
+        id: Date.now(),
+        type: data.type,
+        title: data.title,
+        content: data.content,
+        timestamp: data.timestamp
+      }, ...prev])
+    })
+
+    return () => {
+      if (socketRef.current) socketRef.current.disconnect()
+    }
+  }, [userData.busNumber])
 
   return (
     <div className="min-h-screen bg-black relative overflow-hidden">
@@ -39,7 +66,10 @@ export function StudentDashboard({ userData }: StudentDashboardProps) {
               variant="ghost"
               size="icon"
               className="text-zinc-400 hover:text-[#CCFF00] transition-colors duration-200 relative"
-              onClick={() => setShowNotifications(true)}
+              onClick={() => {
+                setShowNotifications(true)
+                setNotificationCount(0)
+              }}
             >
               <Bell className="h-5 w-5" />
               {notificationCount > 0 && (
@@ -62,8 +92,12 @@ export function StudentDashboard({ userData }: StudentDashboardProps) {
             <div>
                <h2 className="text-zinc-400 text-sm">Estimated Time to DRIEMS</h2>
                <p className="text-4xl font-bold text-white mt-2 mb-2">15 mins</p>
-               <span className="inline-block px-3 py-1 bg-green-500/10 text-green-500 border border-green-500/20 rounded-full text-sm font-medium">
-                 On Time
+               <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium border ${
+                   liveStatus.includes("Delay") || liveStatus.includes("Puncture") || liveStatus.includes("Emergency")
+                   ? "bg-red-500/10 text-red-500 border-red-500/20"
+                   : "bg-green-500/10 text-green-500 border-green-500/20"
+               }`}>
+                 {liveStatus}
                </span>
             </div>
           </Card>
@@ -113,6 +147,8 @@ export function StudentDashboard({ userData }: StudentDashboardProps) {
         <Notifications
           onClose={() => setShowNotifications(false)}
           setNotificationCount={setNotificationCount}
+          busNumber={userData.busNumber}
+          liveData={liveNotifications}
         />
       )}
     </div>

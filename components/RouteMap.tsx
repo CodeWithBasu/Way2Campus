@@ -1,8 +1,10 @@
 "use client"
 
+import { useState, useEffect, useRef } from "react"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { X, MapPin, Bus } from "lucide-react"
+import { io, Socket } from "socket.io-client"
 
 interface RouteMapProps {
   onClose: () => void
@@ -10,6 +12,22 @@ interface RouteMapProps {
 }
 
 export function RouteMap({ onClose, busNumber }: RouteMapProps) {
+  const [liveLocation, setLiveLocation] = useState<{lat: number, lng: number} | null>(null)
+  const socketRef = useRef<Socket | null>(null)
+
+  useEffect(() => {
+    socketRef.current = io()
+    socketRef.current.emit("joinBus", busNumber)
+
+    socketRef.current.on("locationUpdate", (data) => {
+      setLiveLocation({ lat: data.lat, lng: data.lng })
+    })
+
+    return () => {
+      if (socketRef.current) socketRef.current.disconnect()
+    }
+  }, [busNumber])
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -53,18 +71,19 @@ export function RouteMap({ onClose, busNumber }: RouteMapProps) {
           {/* Bus Location Marker */}
           <motion.div
             className="absolute"
-            animate={{ 
-                x: ["10%", "30%", "60%", "80%"], 
-                y: ["80%", "50%", "45%", "15%"] 
-            }}
-            transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+            animate={
+              liveLocation 
+              ? { x: `${(liveLocation.lng % 100)}%`, y: `${(liveLocation.lat % 100)}%` }
+              : { x: ["10%", "30%", "60%", "80%"], y: ["80%", "50%", "45%", "15%"] }
+            }
+            transition={liveLocation ? { duration: 1, ease: "linear" } : { duration: 15, repeat: Infinity, ease: "linear" }}
           >
             <div className="relative group cursor-pointer">
               <div className="h-12 w-12 bg-[#CCFF00] rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(204,255,0,0.5)]">
                 <Bus className="h-6 w-6 text-black" />
               </div>
               <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-black text-[#CCFF00] text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap opacity-100 transition-opacity border border-zinc-800">
-                Bus {busNumber}
+                Bus {busNumber} {liveLocation ? "(Live)" : "(Simulating)"}
               </div>
             </div>
           </motion.div>
@@ -75,7 +94,8 @@ export function RouteMap({ onClose, busNumber }: RouteMapProps) {
             <div className="flex flex-col">
               <span className="text-zinc-400 text-sm">Status</span>
               <span className="text-white font-medium flex items-center gap-2">
-                 <div className="w-2 h-2 rounded-full bg-green-500"></div> On Route
+                 <div className={`w-2 h-2 rounded-full ${liveLocation ? "bg-green-500" : "bg-yellow-500"}`}></div> 
+                 {liveLocation ? "Live GPS Active" : "Waiting for GPS..."}
               </span>
             </div>
             <div className="flex flex-col text-right">

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -9,7 +9,7 @@ import { X, BellRing, AlertTriangle, Clock, CheckCircle2 } from "lucide-react"
 
 interface Notification {
   id: number
-  type: "status" | "delay" | "emergency"
+  type: "status" | "delay" | "emergency" | string
   title: string
   content: string
   timestamp: string
@@ -19,30 +19,22 @@ interface NotificationsProps {
   onClose: () => void
   setNotificationCount: (count: number) => void
   busNumber?: string
+  liveData?: Notification[]
 }
 
-export function Notifications({ onClose, setNotificationCount, busNumber }: NotificationsProps) {
+export function Notifications({ onClose, setNotificationCount, busNumber, liveData }: NotificationsProps) {
   const defaultBus = busNumber || "15"
-  const [notifications, setNotifications] = useState<Notification[]>([
-    {
-      id: 1,
-      type: "delay",
-      title: `Bus ${defaultBus} Update`,
-      content: "Heavy Traffic (Delay). ETA extended by 10 minutes.",
-      timestamp: "Just now",
-    },
-    {
-      id: 2,
-      type: "status",
-      title: `Bus ${defaultBus} Update`,
-      content: "On Route / Normal. Leaving Cuttack Square.",
-      timestamp: "15 minutes ago",
-    },
-  ])
+  const [notifications, setNotifications] = useState<Notification[]>(liveData || [])
+
+  useEffect(() => {
+    if (liveData) {
+      setNotifications(liveData)
+    }
+  }, [liveData])
 
   const handleDismiss = (id: number) => {
     setNotifications((prev) => prev.filter((n) => n.id !== id))
-    setNotificationCount(notifications.length - 1)
+    setNotificationCount(Math.max(0, notifications.length - 1))
   }
 
   const getIcon = (type: string) => {
