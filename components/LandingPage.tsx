@@ -6,25 +6,27 @@ interface LandingPageProps {
 
 export function LandingPage({ onStart }: LandingPageProps) {
     return (
-        <section className="relative min-h-[calc(100vh-50px)] overflow-hidden bg-[linear-gradient(to_bottom,#fff,#b49de0_40%,#A46EDB_88%)] dark:bg-[linear-gradient(to_bottom,#000,#200D42_40%,#4F21A1_74%,#A46EDB_88%_50%)]">
-            <div className="absolute left-1/2 top-[calc(100%-90px)] lg:top-[calc(100%-150px)] h-[500px] w-[700px] md:h-[500px] md:w-[1100px] lg:h-[750px] lg:w-[100%] -translate-x-1/2 rounded-[100%] border-[#B48CDE] bg-black bg-[radial-gradient(closest-side,#000_82%,#9560EB)]"></div>
-            <div className="dark:border-dark-border absolute left-0 top-0 z-0 grid h-full w-full grid-cols-[clamp(28px,10vw,120px)_auto_clamp(28px,10vw,120px)] border-b border-white/10">
+        <section className="relative min-h-[calc(100vh-50px)] overflow-hidden bg-[linear-gradient(to_bottom,#000,#200D42_40%,#4F21A1_74%,#A46EDB_88%_50%)]">
+
+            <div className="absolute left-1/2 top-[calc(100%-90px)]  lg:top-[calc(100%-150px)] h-[500px] w-[700px]   md:h-[500px] md:w-[1100px] lg:h-[750px] lg:w-[100%] -translate-x-1/2 rounded-[100%] border-[#B48CDE] bg-black bg-[radial-gradient(closest-side,#000_82%,#9560EB)]"></div>
+            <div className="border-white/10 absolute left-0 top-0 z-0 grid h-full w-full grid-cols-[clamp(28px,10vw,120px)_auto_clamp(28px,10vw,120px)] border-b">
                 <div className="col-span-1 flex h-full items-center justify-center" />
-                <div className="dark:border-dark-border col-span-1 flex h-full items-center justify-center border-x border-white/10" />
+                <div className="border-white/10 col-span-1 flex h-full items-center justify-center border-x" />
                 <div className="col-span-1 flex h-full items-center justify-center" />
             </div>
-            <figure className="bg-[#CCFF00]/40 pointer-events-none absolute -bottom-[70%] left-1/2 z-0 block aspect-square w-[520px] -translate-x-1/2 rounded-full blur-[200px]" />
-            <figure className="bg-[#A46EDB] pointer-events-none absolute left-[4vw] top-[64px] z-20 hidden aspect-square w-[32vw] rounded-full opacity-50 blur-[100px] md:block" />
-            <figure className="bg-[#CCFF00] pointer-events-none absolute bottom-[-50px] right-[7vw] z-20 hidden aspect-square w-[30vw] rounded-full opacity-50 blur-[100px] md:block" />
-            <div className="dark:divide-dark-border relative z-10 flex flex-col divide-y divide-white/10 pt-[35px]">
+            <figure className="bg-purple-500/40 pointer-events-none absolute -bottom-[70%] left-1/2 z-0 block aspect-square w-[520px] -translate-x-1/2 rounded-full blur-[200px]" />
+            <figure className="bg-[#200D42] pointer-events-none absolute left-[4vw] top-[64px] z-20 hidden aspect-square w-[32vw] rounded-full opacity-50 blur-[100px] md:block" />
+            <figure className="bg-[#4F21A1] pointer-events-none absolute bottom-[-50px] right-[7vw] z-20 hidden aspect-square w-[30vw] rounded-full opacity-50 blur-[100px] md:block" />
+            
+            <div className="divide-white/10 relative z-10 flex flex-col divide-y pt-[35px]">
                 <div className="flex flex-col items-center justify-end">
-                    <div className="dark:border-dark-border flex items-center gap-2 !border !border-b-0 border-white/5 px-4 py-2">
+                    <div className="border-white/10 flex items-center gap-2 !border !border-b-0 px-4 py-2">
                         <p className="text-zinc-300 text-sm tracking-tight">
                             Trusted by 1000+ Students
                         </p>
                     </div>
                 </div>
-                <div>
+            <div>
                     <div className="mx-auto flex h-[288px] max-w-[80vw] shrink-0 flex-col items-center justify-center gap-2 px-2 py-4 sm:px-10 lg:px-24">
                         <h1 className="text-white text-pretty text-center text-4xl sm:text-5xl md:text-6xl lg:text-[clamp(50px,7vw,75px)] font-medium leading-none tracking-[-1.44px] md:max-w-screen-lg md:tracking-[-2.16px]">
                             Real-Time College Bus Tracking for DRIEMS
@@ -35,13 +37,13 @@ export function LandingPage({ onStart }: LandingPageProps) {
                     </div>
                 </div>
 
-                <div className="dark:divide-dark-border flex items-start justify-center divide-y divide-white/10 px-8 sm:px-24">
+                <div className="divide-white/10 flex items-start justify-center divide-y px-8 sm:px-24">
                     <div className="flex w-full max-w-[80vw] flex-col items-center justify-start md:!max-w-[392px]">
                         <button className="cursor-pointer w-full text-white">
                             <div
                                 className={clsx(
                                     "!h-14 flex-col items-center justify-center rounded-none !text-base",
-                                    "max-w-sm:!border-x-0 dark:border-dark-border flex w-full !border-x !border-y-0 border-white/10 !bg-transparent backdrop-blur-xl transition-colors duration-150 hover:!bg-black/5 dark:hover:!bg-white/5",
+                                    "max-w-sm:!border-x-0 border-white/10 flex w-full !border-x !border-y-0 !bg-transparent backdrop-blur-xl transition-colors duration-150 hover:!bg-white/5",
                                 )}
                             >
                                 Learn more
@@ -50,8 +52,8 @@ export function LandingPage({ onStart }: LandingPageProps) {
                         <button onClick={onStart} className="cursor-pointer w-full">
                             <div
                                 className={clsx(
-                                    "text-black font-bold boder-2 !h-14 flex-col items-center justify-center rounded-none border-none !text-base",
-                                    "flex w-full border-[1.2px] border-white/5 bg-[#CCFF00] hover:bg-[#CCFF00]/90 transition-colors",
+                                    "text-white font-bold boder-2 !h-14 flex-col items-center justify-center rounded-none border-none !text-base",
+                                    "flex w-full border-[1.2px] border-white/5 bg-gradient-to-tr from-purple-800 via-purple-700 to-purple-400 hover:opacity-90 transition-opacity",
                                 )}
                             >
                                 Get started
