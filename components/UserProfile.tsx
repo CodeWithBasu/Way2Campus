@@ -75,11 +75,11 @@ export function UserProfile({ user, onUpdateUser, onLogout }: UserProfileProps) 
           <div className="p-4">
             <div className="flex justify-between items-center">
               <div>
-                <h3 className="text-[#CCFF00] text-sm font-medium">Suscripción activa</h3>
-                <p className="text-zinc-400 text-sm">hasta {new Date().toLocaleDateString()}</p>
+                <h3 className="text-[#CCFF00] text-sm font-medium">Active Assignment</h3>
+                <p className="text-zinc-400 text-sm">Since {new Date().toLocaleDateString()}</p>
               </div>
               <Button variant="outline" className="border-zinc-700 text-[#CCFF00] hover:bg-[#CCFF00] hover:text-black">
-                Editar
+                Edit
               </Button>
             </div>
           </div>
@@ -99,7 +99,7 @@ export function UserProfile({ user, onUpdateUser, onLogout }: UserProfileProps) 
             className="w-full justify-between text-zinc-400 hover:text-[#CCFF00] hover:bg-zinc-800/50"
             onClick={() => setShowSupportChat(true)}
           >
-            <span>Soporte</span>
+            <span>Support</span>
             <ChevronRight className="h-5 w-5 text-zinc-600" />
           </Button>
           <Button
@@ -107,7 +107,7 @@ export function UserProfile({ user, onUpdateUser, onLogout }: UserProfileProps) 
             className="w-full justify-between text-zinc-400 hover:text-[#CCFF00] hover:bg-zinc-800/50"
             onClick={() => setShowTerms(true)}
           >
-            <span>About la app</span>
+            <span>About Way2Campus</span>
             <ChevronRight className="h-5 w-5 text-zinc-600" />
           </Button>
         </div>
