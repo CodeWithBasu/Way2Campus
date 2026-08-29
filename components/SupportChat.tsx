@@ -16,12 +16,12 @@ interface Message {
 }
 
 const supportResponses = [
-  "Gracias por contactar al soporte de SnowConnect. ¿En qué puedo ayudarte hoy?",
-  "Entiendo tu preocupación. Voy a revisar tu cuenta y te daré más información en un momento.",
-  "¿Hay algo más en lo que pueda ayudarte?",
-  "Si tienes más preguntas, no dudes en hacerlas. Estamos aquí para ayudarte.",
-  "Gracias por tu paciencia. He revisado tu cuenta y todo parece estar en orden.",
-  "¿Te gustaría que te explique cómo usar alguna función específica de la app?",
+  "Thank you for contacting Way2Campus Support. How can I help you today?",
+  "I understand. Let me check your account and I will give you more information in a moment.",
+  "Is there anything else I can help you with?",
+  "If you have more questions, please do not hesitate to ask. We are here to help.",
+  "Thank you for your patience. I have reviewed your account and everything seems to be in order.",
+  "Would you like me to explain how to use a specific feature of the app?",
 ]
 
 export function SupportChat({ onClose }: { onClose: () => void }) {
@@ -35,10 +35,9 @@ export function SupportChat({ onClose }: { onClose: () => void }) {
 
   useEffect(() => {
     scrollToBottom()
-  }, [messages, messagesEndRef]) // Added messagesEndRef to dependencies
+  }, [messages, messagesEndRef])
 
   useEffect(() => {
-    // Message inicial del soporte
     setMessages([
       {
         id: Date.now(),
@@ -51,7 +50,7 @@ export function SupportChat({ onClose }: { onClose: () => void }) {
 
   const sendMessage = () => {
     if (newMessage.trim()) {
-      const userMessage = {
+      const userMessage: Message = {
         id: Date.now(),
         text: newMessage,
         sender: "user",
@@ -61,9 +60,8 @@ export function SupportChat({ onClose }: { onClose: () => void }) {
       setMessages((prev) => [...prev, userMessage])
       setNewMessage("")
 
-      // Simular respuesta del soporte
       setTimeout(() => {
-        const supportMessage = {
+        const supportMessage: Message = {
           id: Date.now(),
           text: supportResponses[Math.floor(Math.random() * supportResponses.length)],
           sender: "support",
@@ -88,11 +86,11 @@ export function SupportChat({ onClose }: { onClose: () => void }) {
               <div className="flex items-center space-x-3">
                 <Avatar>
                   <AvatarImage src="/support-avatar.png" />
-                  <AvatarFallback>SC</AvatarFallback>
+                  <AvatarFallback>W2C</AvatarFallback>
                 </Avatar>
                 <div>
-                  <h2 className="text-white font-medium">Soporte SnowConnect</h2>
-                  <p className="text-sm text-zinc-400">En línea</p>
+                  <h2 className="text-white font-medium">Way2Campus Support</h2>
+                  <p className="text-sm text-zinc-400">Online</p>
                 </div>
               </div>
               <Button variant="ghost" size="icon" onClick={onClose} className="text-zinc-400 hover:text-white">
@@ -127,7 +125,7 @@ export function SupportChat({ onClose }: { onClose: () => void }) {
               <Input
                 value={newMessage}
                 onChange={(e) => setNewMessage(e.target.value)}
-                placeholder="Escribe tu mensaje..."
+                placeholder="Type your message..."
                 className="flex-1 bg-zinc-800 border-zinc-700 text-white"
                 onKeyPress={(e) => e.key === "Enter" && sendMessage()}
               />

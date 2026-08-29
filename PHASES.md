@@ -30,7 +30,7 @@ This document outlines the step-by-step transformation of the codebase into **Wa
 *   **Step 3:** Design push notification alerts for critical updates (e.g., "Bus 12 has a puncture, please make alternate plans").
 *   **Step 4:** Display estimated time of arrival (ETA) based on driver status.
 
-## Phase 5: Polish & Testing (Pending)
+## Phase 5: Polish & Testing (✅ Completed)
 *   **Step 1:** Ensure dark mode aesthetics remain clean and accessible.
 *   **Step 2:** Test the user flow extensively on mobile views.
 *   **Step 3:** Final code cleanup and removal of any remaining legacy code.
