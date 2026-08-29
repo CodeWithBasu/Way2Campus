@@ -9,7 +9,7 @@ This document outlines the step-by-step transformation of the codebase into **Wa
 *   Create and push the GitHub `README.md` with the project description.
 *   Link the local repository to GitHub and execute atomic pushes.
 
-## Phase 2: Onboarding Flow Redesign (Pending)
+## Phase 2: Onboarding Flow Redesign (✅ Completed)
 *   **Step 1:** Modify `Onboarding.tsx` to remove irrelevant steps (like Ski Skill Level).
 *   **Step 2:** Add a Role Selection screen (Student vs. Bus Driver).
 *   **Step 3:** Add a Bus Selection screen for students (Select Bus 1 through 55).

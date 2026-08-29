@@ -6,7 +6,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Camera, X } from "lucide-react"
@@ -15,13 +14,10 @@ import { getRandomProfileImage } from "../utils/constants"
 interface EditProfileProps {
   user: {
     name: string
-    age: number
+    role: string
+    busNumber: string
     avatar: string
-    location: string
     joinDate: string
-    style: string
-    level: string
-    bio: string
     phone?: string
   }
   onClose: () => void
@@ -41,17 +37,13 @@ export function EditProfile({ user, onClose, onUpdateUser }: EditProfileProps) {
     setUserProfile((prev) => ({ ...prev, avatar: newAvatar }))
   }
 
+  const busNumbers = Array.from({ length: 55 }, (_, i) => (i + 1).toString())
+
   return (
     <motion.div
-      initial={{
-        opacity: 0,
-      }}
-      animate={{
-        opacity: 1,
-      }}
-      exit={{
-        opacity: 0,
-      }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
       className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50"
       onClick={onClose}
     >
@@ -69,7 +61,6 @@ export function EditProfile({ user, onClose, onUpdateUser }: EditProfileProps) {
             </Button>
           </CardHeader>
           <CardContent className="space-y-6">
-            {/* Foto de perfil */}
             <div className="flex justify-center">
               <div className="relative">
                 <Avatar className="w-32 h-32">
@@ -86,12 +77,9 @@ export function EditProfile({ user, onClose, onUpdateUser }: EditProfileProps) {
               </div>
             </div>
 
-            {/* Información básica */}
             <div className="grid gap-4">
               <div className="grid gap-2">
-                <Label htmlFor="name" className="text-white">
-                  Nombre
-                </Label>
+                <Label htmlFor="name" className="text-white">Name</Label>
                 <Input
                   id="name"
                   value={userProfile.name}
@@ -101,22 +89,7 @@ export function EditProfile({ user, onClose, onUpdateUser }: EditProfileProps) {
               </div>
 
               <div className="grid gap-2">
-                <Label htmlFor="age" className="text-white">
-                  Edad
-                </Label>
-                <Input
-                  id="age"
-                  type="number"
-                  value={userProfile.age}
-                  onChange={(e) => setUserProfile((prev) => ({ ...prev, age: Number(e.target.value) }))}
-                  className="bg-zinc-800 border-zinc-700 text-white"
-                />
-              </div>
-
-              <div className="grid gap-2">
-                <Label htmlFor="phone" className="text-white">
-                  Teléfono
-                </Label>
+                <Label htmlFor="phone" className="text-white">Phone</Label>
                 <Input
                   id="phone"
                   type="tel"
@@ -127,59 +100,41 @@ export function EditProfile({ user, onClose, onUpdateUser }: EditProfileProps) {
               </div>
 
               <div className="grid gap-2">
-                <Label htmlFor="bio" className="text-white">
-                  Biografía
-                </Label>
-                <Textarea
-                  id="bio"
-                  value={userProfile.bio}
-                  onChange={(e) => setUserProfile((prev) => ({ ...prev, bio: e.target.value }))}
-                  rows={4}
-                  className="bg-zinc-800 border-zinc-700 text-white"
-                />
-              </div>
-            </div>
-
-            {/* Experiencia y estilo */}
-            <div className="grid gap-4 md:grid-cols-2">
-              <div className="grid gap-2">
-                <Label className="text-white">Level</Label>
+                <Label className="text-white">Role</Label>
                 <Select
-                  value={userProfile.level}
-                  onValueChange={(value) => setUserProfile((prev) => ({ ...prev, level: value }))}
+                  value={userProfile.role}
+                  onValueChange={(value) => setUserProfile((prev) => ({ ...prev, role: value }))}
                 >
                   <SelectTrigger className="bg-zinc-800 border-zinc-700 text-white">
-                    <SelectValue placeholder="Selecciona tu nivel" />
+                    <SelectValue placeholder="Select your role" />
                   </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="beginner">Beginner</SelectItem>
-                    <SelectItem value="intermediate">Intermediate</SelectItem>
-                    <SelectItem value="advanced">Advanced</SelectItem>
-                    <SelectItem value="expert">Expert</SelectItem>
+                  <SelectContent className="bg-zinc-900 border-zinc-800">
+                    <SelectItem value="student" className="text-white">Student</SelectItem>
+                    <SelectItem value="driver" className="text-white">Driver</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <div className="grid gap-2">
-                <Label className="text-white">Style preferido</Label>
+                <Label className="text-white">Bus Number</Label>
                 <Select
-                  value={userProfile.style}
-                  onValueChange={(value) => setUserProfile((prev) => ({ ...prev, style: value }))}
+                  value={userProfile.busNumber}
+                  onValueChange={(value) => setUserProfile((prev) => ({ ...prev, busNumber: value }))}
                 >
                   <SelectTrigger className="bg-zinc-800 border-zinc-700 text-white">
-                    <SelectValue placeholder="Selecciona tu estilo" />
+                    <SelectValue placeholder="Select Bus" />
                   </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="freeride">Freeride</SelectItem>
-                    <SelectItem value="freestyle">Freestyle</SelectItem>
-                    <SelectItem value="all-mountain">All-Mountain</SelectItem>
-                    <SelectItem value="alpine">Alpine</SelectItem>
+                  <SelectContent className="bg-zinc-900 border-zinc-800 max-h-[200px]">
+                    {busNumbers.map((busNum) => (
+                      <SelectItem key={busNum} value={busNum} className="text-white">
+                        Bus {busNum}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
             </div>
 
-            {/* Botones de acción */}
             <div className="flex justify-end space-x-2 pt-4">
               <Button variant="outline" onClick={onClose} className="bg-zinc-800 text-white hover:bg-zinc-700">
                 Cancel

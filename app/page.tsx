@@ -10,33 +10,25 @@ type Step = "welcome" | "onboarding" | "main"
 
 export default function Home() {
   const [step, setStep] = useState<Step>("welcome")
-  const [userLocation, setUserLocation] = useState<string | null>(null)
   const [userData, setUserData] = useState({
     name: "",
-    age: 0,
+    role: "",
+    busNumber: "",
     avatar: "",
-    location: "",
     joinDate: "",
-    style: "",
-    level: "",
-    bio: "",
   })
 
   const handleOnboardingComplete = (data: {
     name: string
-    age: number
-    style: string
-    level: string
-    location: string
+    role: string
+    busNumber: string
   }) => {
-    if (data.location && locations.includes(data.location) && data.name) {
+    if (data.name && data.role && data.busNumber) {
       const newUserData = {
         ...data,
         avatar: getRandomProfileImage(),
         joinDate: new Date().toLocaleDateString(),
-        bio: `${data.name} is a ${data.level} de ${data.style}.`,
       }
-      setUserLocation(data.location)
       setUserData(newUserData)
       setStep("main")
     } else {
@@ -47,16 +39,12 @@ export default function Home() {
 
   const handleLogout = () => {
     setStep("welcome")
-    setUserLocation(null)
     setUserData({
       name: "",
-      age: 0,
+      role: "",
+      busNumber: "",
       avatar: "",
-      location: "",
       joinDate: "",
-      style: "",
-      level: "",
-      bio: "",
     })
   }
 
@@ -68,8 +56,8 @@ export default function Home() {
     return <Onboarding onComplete={handleOnboardingComplete} />
   }
 
-  if (userLocation && userData.name) {
-    return <Dashboard userLocation={userLocation} userData={userData} onLogout={handleLogout} />
+  if (userData.name) {
+    return <Dashboard userData={userData} onLogout={handleLogout} />
   }
 
   return <Onboarding onComplete={handleOnboardingComplete} />

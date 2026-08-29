@@ -7,21 +7,17 @@ import { NearbyRiders } from "./NearbyRiders"
 import { Settings } from "./Settings"
 
 interface DashboardProps {
-  userLocation: string
   userData: {
     name: string
-    age: number
+    role: string
+    busNumber: string
     avatar: string
-    location: string
     joinDate: string
-    style: string
-    level: string
-    bio: string
   }
   onLogout: () => void
 }
 
-export function Dashboard({ userLocation, userData, onLogout }: DashboardProps) {
+export function Dashboard({ userData, onLogout }: DashboardProps) {
   const [user, setUser] = useState(userData)
   const [showSettings, setShowSettings] = useState(false)
 
@@ -47,7 +43,7 @@ export function Dashboard({ userLocation, userData, onLogout }: DashboardProps) 
           </TabsTrigger>
         </TabsList>
         <TabsContent value="riders" className="m-0 pb-16">
-          <NearbyRiders userLocation={userLocation} />
+          <NearbyRiders />
         </TabsContent>
         <TabsContent value="profile" className="m-0 pb-16">
           <UserProfile

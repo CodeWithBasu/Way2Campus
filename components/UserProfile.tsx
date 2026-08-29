@@ -13,13 +13,10 @@ import { TermsAndConditions } from "./TermsAndConditions"
 interface UserProfileProps {
   user: {
     name: string
-    age: number
+    role: string
+    busNumber: string
     avatar: string
-    location: string
     joinDate: string
-    style: string
-    level: string
-    bio: string
     phone?: string
   }
   onUpdateUser: (updatedUser: Partial<UserProfileProps["user"]>) => void
@@ -65,7 +62,7 @@ export function UserProfile({ user, onUpdateUser, onLogout }: UserProfileProps) 
             <input type="file" ref={fileInputRef} onChange={handleFileChange} accept="image/*" className="hidden" />
           </div>
           <h2 className="text-xl font-medium text-white mt-4">{user.name}</h2>
-          <p className="text-zinc-400 text-sm">{user.location}</p>
+          <p className="text-zinc-400 text-sm capitalize">{user.role} - Bus {user.busNumber}</p>
           {user.phone && (
             <p className="text-zinc-400 text-sm mt-2 flex items-center justify-center">
               <Phone className="h-4 w-4 mr-2" />
