@@ -1,4 +1,5 @@
 import clsx from "clsx"
+import { Bus, MapPin, BellRing, Navigation, ShieldCheck, Zap, Smartphone, Radio } from "lucide-react"
 
 interface LandingPageProps {
   onStart: () => void;
@@ -69,16 +70,15 @@ export function LandingPage({ onStart }: LandingPageProps) {
     )
 }
 
-const logos = [
-    { name: "Vercel", url: "https://res.cloudinary.com/dfhp33ufc/image/upload/v1715881430/vercel_wordmark_dark_mhv8u8.svg" },
-    { name: "Nextjs", url: "https://res.cloudinary.com/dfhp33ufc/image/upload/v1715881475/nextjs_logo_dark_gfkf8m.svg" },
-    { name: "Prime", url: "https://res.cloudinary.com/dfhp33ufc/image/upload/v1715276558/logos/t2awrrfzdvmg1chnzyfr.svg" },
-    { name: "Trustpilot", url: "https://res.cloudinary.com/dfhp33ufc/image/upload/v1715276558/logos/tkfspxqmjflfllbuqxsi.svg" },
-    { name: "Webflow", url: "https://res.cloudinary.com/dfhp33ufc/image/upload/v1715276560/logos/nymiivu48d5lywhf9rpf.svg" },
-    { name: "Airbnb", url: "https://res.cloudinary.com/dfhp33ufc/image/upload/v1715276558/logos/pmblusboe7vkw8vxdknx.svg" },
-    { name: "Tina", url: "https://res.cloudinary.com/dfhp33ufc/image/upload/v1715276560/logos/afqhiygywyphuou6xtxc.svg" },
-    { name: "Stackoverflow", url: "https://res.cloudinary.com/dfhp33ufc/image/upload/v1715276558/logos/ts1j4mkooxqmscgptafa.svg" },
-    { name: "Mistral", url: "https://res.cloudinary.com/dfhp33ufc/image/upload/v1715276558/logos/tyos2ayezryjskox3wzs.svg" },
+const features = [
+    { name: "Live GPS", icon: Navigation },
+    { name: "Instant Alerts", icon: BellRing },
+    { name: "Student App", icon: Smartphone },
+    { name: "Driver App", icon: Bus },
+    { name: "Real-Time ETAs", icon: Zap },
+    { name: "Secure", icon: ShieldCheck },
+    { name: "WebSockets", icon: Radio },
+    { name: "Route Maps", icon: MapPin },
 ]
 
 const AnimatedLogoCloud = () => {
@@ -98,14 +98,15 @@ const AnimatedLogoCloud = () => {
                   key={index}
                   className="flex shrink-0 animate-x-slider flex-row justify-around gap-6"
                 >
-                  {logos.map((logo, key) => (
-                    <img
-                      key={key}
-                      src={logo.url}
-                      className="h-10 w-28 px-2 flex-none brightness-0 invert"
-                      alt={logo.name}
-                    />
-                  ))}
+                  {features.map((feature, key) => {
+                    const Icon = feature.icon;
+                    return (
+                      <div key={key} className="flex items-center justify-center gap-2 px-6 flex-none text-white/50 font-medium text-lg">
+                         <Icon className="h-6 w-6" />
+                         <span>{feature.name}</span>
+                      </div>
+                    )
+                  })}
                 </div>
               ))}
           </div>
