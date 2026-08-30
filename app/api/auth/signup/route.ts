@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 export async function POST(req: Request) {
   try {
-    const { name, email, phone, password, role, busNumber } = await req.json();
+    const { name, email, phone, password, role, busNumber, inviteCode } = await req.json();
 
     if (!name || !password || !role || !busNumber) {
       return NextResponse.json({ error: "Missing fields" }, { status: 400 });
@@ -13,8 +13,13 @@ export async function POST(req: Request) {
     if (role === "STUDENT" && !email) {
       return NextResponse.json({ error: "Email is required for students" }, { status: 400 });
     }
-    if (role === "DRIVER" && !phone) {
-      return NextResponse.json({ error: "Phone number is required for drivers" }, { status: 400 });
+    if (role === "DRIVER") {
+      if (!phone) {
+        return NextResponse.json({ error: "Phone number is required for drivers" }, { status: 400 });
+      }
+      if (inviteCode !== "DRIEMS-KEY-2026") {
+        return NextResponse.json({ error: "Invalid Driver Invite Code" }, { status: 403 });
+      }
     }
 
     const user = await prisma.user.create({

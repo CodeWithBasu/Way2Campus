@@ -13,6 +13,7 @@ export default function SignupPage() {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [busNumber, setBusNumber] = useState("15");
+  const [inviteCode, setInviteCode] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -24,7 +25,7 @@ export default function SignupPage() {
       const res = await fetch("/api/auth/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, phone, password, role, busNumber }),
+        body: JSON.stringify({ name, email, phone, password, role, busNumber, inviteCode }),
       });
 
       const data = await res.json();
@@ -115,6 +116,15 @@ export default function SignupPage() {
               <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={4} className="w-full rounded-xl border border-white/10 bg-black/50 py-2.5 pl-10 pr-4 text-white placeholder:text-zinc-600 focus:border-[#CCFF00] focus:outline-none focus:ring-1 focus:ring-[#CCFF00]" />
             </div>
           </div>
+
+          {role === "DRIVER" && (
+            <div className="space-y-1.5 pt-2 border-t border-white/10 mt-4">
+              <label className="text-xs font-semibold uppercase tracking-wider text-yellow-500">Security Passcode (For Drivers Only)</label>
+              <div className="relative">
+                <input type="password" value={inviteCode} onChange={(e) => setInviteCode(e.target.value)} placeholder="Enter College Auth Key" required className="w-full rounded-xl border border-yellow-500/50 bg-yellow-500/5 py-2.5 px-4 text-white placeholder:text-zinc-600 focus:border-yellow-500 focus:outline-none focus:ring-1 focus:ring-yellow-500" />
+              </div>
+            </div>
+          )}
 
           <button type="submit" disabled={loading} className="group flex w-full items-center justify-center gap-2 rounded-xl bg-[#CCFF00] py-3.5 mt-6 font-semibold text-black transition-all hover:bg-[#b3e600] active:scale-[0.98] disabled:opacity-50">
             {loading ? "Creating Account..." : "Sign Up"}
