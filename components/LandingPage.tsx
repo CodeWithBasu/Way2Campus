@@ -31,14 +31,16 @@ export function LandingPage({ onStart }: LandingPageProps) {
     return (
         <div className="w-full bg-[#0a0a0a]">
         <section className="relative min-h-[calc(100vh-50px)] overflow-hidden bg-[linear-gradient(to_bottom,#000,#200D42_40%,#4F21A1_74%,#A46EDB_88%_50%)]">
-            {/* Logo */}
-            <div className="absolute top-6 left-6 z-50 flex items-center gap-3 bg-white/10 backdrop-blur-md px-4 py-2 rounded-2xl border border-white/20 shadow-xl">
-              <img src="/logo.png" alt="DRIEMS Logo" className="h-10 w-auto" />
-              <span className="text-white font-bold tracking-wider hidden sm:block">WAY2CAMPUS</span>
-            </div>
+            {/* Header / Logo */}
+            <header className="relative z-50 w-full flex items-center justify-between px-4 py-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+              <div className="flex items-center gap-3 bg-white/10 backdrop-blur-md px-4 py-2 rounded-2xl border border-white/20 shadow-xl">
+                <img src="/logo.png" alt="DRIEMS Logo" className="h-8 sm:h-10 w-auto" />
+                <span className="text-white font-bold tracking-wider hidden sm:block">WAY2CAMPUS</span>
+              </div>
+            </header>
 
             {/* Background elements */}
-            <div className="absolute inset-0 z-0 opacity-30 mix-blend-overlay">
+            <div className="absolute inset-0 z-0 opacity-30 mix-blend-overlay mt-20">
               <img src="/college.jpeg" alt="DRIEMS College" className="w-full h-full object-cover" />
             </div>
 
@@ -52,34 +54,30 @@ export function LandingPage({ onStart }: LandingPageProps) {
             <figure className="bg-[#200D42] pointer-events-none absolute left-[4vw] top-[64px] z-20 hidden aspect-square w-[32vw] rounded-full opacity-50 blur-[100px] md:block" />
             <figure className="bg-[#4F21A1] pointer-events-none absolute bottom-[-50px] right-[7vw] z-20 hidden aspect-square w-[30vw] rounded-full opacity-50 blur-[100px] md:block" />
             
-            <div className="divide-white/10 relative z-10 flex flex-col divide-y pt-[35px]">
-                <div className="flex flex-col items-center justify-end">
-                    <div className="border-white/10 flex items-center gap-2 !border !border-b-0 px-4 py-2 backdrop-blur-md bg-black/30">
-                        <p className="text-zinc-300 text-sm tracking-tight">
+            <div className="relative z-10 flex flex-col items-center justify-center pt-8 sm:pt-[35px] pb-24">
+                <div className="flex flex-col items-center justify-center mb-8">
+                    <div className="border-white/10 flex items-center gap-2 border px-4 py-2 rounded-full backdrop-blur-md bg-black/30">
+                        <p className="text-zinc-300 text-xs sm:text-sm tracking-tight">
                             Trusted by 1000+ Students at DRIEMS
                         </p>
                     </div>
                 </div>
-                <div>
-                    <div className="mx-auto flex h-[288px] max-w-[80vw] shrink-0 flex-col items-center justify-center gap-2 px-2 py-4 sm:px-10 lg:px-24">
-                        <h1 className="text-white text-pretty text-center text-4xl sm:text-5xl md:text-6xl lg:text-[clamp(50px,7vw,75px)] font-medium leading-none tracking-[-1.44px] md:max-w-screen-lg md:tracking-[-2.16px]">
-                            Real-Time College Bus Tracking for DRIEMS
-                        </h1>
-                        <h2 className="text-md text-zinc-300 max-w-2xl text-pretty text-center md:text-lg mt-4 drop-shadow-md">
-                            Never miss your bus again. Live GPS tracking, instant delay notifications, and accurate ETAs for both students and drivers.
-                        </h2>
-                    </div>
+                
+                <div className="mx-auto flex w-full max-w-4xl flex-col items-center justify-center gap-6 px-4 sm:px-10 lg:px-24 text-center">
+                    <h1 className="text-white text-pretty text-4xl sm:text-5xl md:text-6xl lg:text-[clamp(50px,7vw,75px)] font-bold leading-tight tracking-[-1.44px] md:tracking-[-2.16px]">
+                        Real-Time College Bus Tracking for DRIEMS
+                    </h1>
+                    <h2 className="text-sm text-zinc-300 max-w-2xl text-pretty md:text-lg drop-shadow-md">
+                        Never miss your bus again. Live GPS tracking, instant delay notifications, and accurate ETAs for both students and drivers.
+                    </h2>
+                    
+                    <button onClick={onStart} className="mt-8 cursor-pointer w-full max-w-[280px] text-black">
+                        <div className="h-14 flex items-center justify-center rounded-xl text-base font-bold bg-[#CCFF00] transition-all duration-150 hover:bg-[#b3e600] active:scale-95 shadow-[0_0_20px_rgba(204,255,0,0.3)]">
+                            Enter App
+                        </div>
+                    </button>
                 </div>
-
-                <div className="divide-white/10 flex items-start justify-center divide-y px-8 sm:px-24">
-                    <div className="flex w-full max-w-[80vw] flex-col items-center justify-start md:!max-w-[392px]">
-                        <button onClick={onStart} className="cursor-pointer w-full text-black">
-                            <div className={clsx("!h-14 flex flex-col items-center justify-center rounded-none !text-base font-bold", "max-w-sm:!border-x-0 border-white/10 flex w-full !border-x !border-y-0 !bg-[#CCFF00] backdrop-blur-xl transition-all duration-150 hover:bg-[#b3e600] active:scale-95 shadow-[0_0_20px_rgba(204,255,0,0.3)]")}>
-                                Enter App
-                            </div>
-                        </button>
-                    </div>
-                </div>
+            </div>
                 <div className="mx-auto max-w-7xl">
                     <AnimatedLogoCloud />
                 </div>
