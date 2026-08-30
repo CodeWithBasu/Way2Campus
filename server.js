@@ -41,6 +41,11 @@ app.prepare().then(() => {
       io.to(`bus-${data.busNumber}`).emit("statusUpdate", data);
     });
 
+    socket.on("globalAnnouncement", (data) => {
+      console.log("Global Announcement:", data);
+      socket.broadcast.emit("globalAnnouncement", data);
+    });
+
     socket.on("disconnect", () => {
       console.log("Client disconnected:", socket.id);
     });

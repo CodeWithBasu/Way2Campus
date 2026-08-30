@@ -45,6 +45,18 @@ export function StudentDashboard({ userData }: StudentDashboardProps) {
       }, ...prev])
     })
 
+    socketRef.current.on("globalAnnouncement", (data) => {
+      setLiveStatus("URGENT: " + data.message)
+      setNotificationCount(prev => prev + 1)
+      setLiveNotifications(prev => [{
+        id: Date.now(),
+        type: "urgent",
+        title: "Global Announcement",
+        content: data.message,
+        timestamp: data.timestamp
+      }, ...prev])
+    })
+
     return () => {
       if (socketRef.current) socketRef.current.disconnect()
     }
