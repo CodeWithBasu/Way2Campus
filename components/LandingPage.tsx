@@ -31,6 +31,12 @@ export function LandingPage({ onStart }: LandingPageProps) {
     return (
         <div className="w-full bg-[#0a0a0a]">
         <section className="relative min-h-[calc(100vh-50px)] overflow-hidden bg-[linear-gradient(to_bottom,#000,#200D42_40%,#4F21A1_74%,#A46EDB_88%_50%)]">
+            {/* Logo */}
+            <div className="absolute top-6 left-6 z-50 flex items-center gap-3 bg-white/10 backdrop-blur-md px-4 py-2 rounded-2xl border border-white/20 shadow-xl">
+              <img src="/logo.png" alt="DRIEMS Logo" className="h-10 w-auto" />
+              <span className="text-white font-bold tracking-wider hidden sm:block">WAY2CAMPUS</span>
+            </div>
+
             {/* Background elements */}
             <div className="absolute inset-0 z-0 opacity-30 mix-blend-overlay">
               <img src="/college.jpeg" alt="DRIEMS College" className="w-full h-full object-cover" />
