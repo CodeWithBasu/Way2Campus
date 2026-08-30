@@ -6,6 +6,10 @@ import { Button } from "@/components/ui/button"
 import { Bus, MapPin, AlertCircle, AlertTriangle, CheckCircle2, Clock } from "lucide-react"
 import { MouseMoveEffect } from "./MouseMoveEffect"
 import { io, Socket } from "socket.io-client"
+import { toast } from "sonner"
+import dynamic from "next/dynamic"
+
+const MapComponent = dynamic(() => import("@/components/MapComponent"), { ssr: false })
 
 interface DriverDashboardProps {
   userData: {
@@ -22,6 +26,7 @@ export function DriverDashboard({ userData }: DriverDashboardProps) {
   const socketRef = useRef<Socket | null>(null)
   const watchIdRef = useRef<number | null>(null)
   const [gpsActive, setGpsActive] = useState(false)
+  const [currentLocation, setCurrentLocation] = useState<{lat: number, lng: number} | null>(null)
 
   useEffect(() => {
     // Connect to Socket.IO server
@@ -35,6 +40,8 @@ export function DriverDashboard({ userData }: DriverDashboardProps) {
       watchIdRef.current = navigator.geolocation.watchPosition(
         (position) => {
           setGpsActive(true)
+          setCurrentLocation({ lat: position.coords.latitude, lng: position.coords.longitude })
+          
           if (socketRef.current) {
             socketRef.current.emit("updateLocation", {
               busNumber: userData.busNumber,
@@ -74,7 +81,7 @@ export function DriverDashboard({ userData }: DriverDashboardProps) {
         content: newStatus,
         timestamp: new Date().toLocaleTimeString()
       })
-      alert(`Status broadcasted: ${newStatus}`)
+      toast.success(`Status broadcasted: ${newStatus}`)
     }
   }
 
@@ -134,7 +141,7 @@ export function DriverDashboard({ userData }: DriverDashboardProps) {
           </div>
         </section>
 
-        <section className="pt-8">
+        <section className="pt-8 space-y-6">
             <Card className="bg-zinc-900 border-zinc-800 p-6 text-center">
                 <MapPin className={`h-8 w-8 mx-auto mb-4 ${gpsActive ? "text-green-500" : "text-zinc-600"}`} />
                 <h3 className="text-white font-medium mb-2">Location Broadcasting Live</h3>
@@ -144,6 +151,16 @@ export function DriverDashboard({ userData }: DriverDashboardProps) {
                     : "Waiting for GPS signal..."}
                 </p>
             </Card>
+
+            <div className="w-full h-[300px] sm:h-[400px] rounded-2xl overflow-hidden border border-zinc-800 bg-zinc-900">
+              {currentLocation ? (
+                <MapComponent locations={[{ ...currentLocation, busNumber: userData.busNumber, speed: 0 }]} />
+              ) : (
+                <div className="h-full w-full flex items-center justify-center text-zinc-500 text-sm">
+                  Waiting for GPS location to display map...
+                </div>
+              )}
+            </div>
         </section>
       </div>
     </div>
