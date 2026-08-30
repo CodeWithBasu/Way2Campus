@@ -42,7 +42,7 @@ export default function Footer() {
             <a href="#" className="text-zinc-400 transition-colors hover:text-[#CCFF00]">Documentation</a>
             <a href="#" className="text-zinc-400 transition-colors hover:text-[#CCFF00]">Help Center</a>
             <a href="#" className="text-zinc-400 transition-colors hover:text-[#CCFF00]">Contact Support</a>
-            <a href="#" className="text-zinc-400 transition-colors hover:text-[#CCFF00]">Bus Timetables</a>
+            <a href="/routes" className="text-zinc-400 transition-colors hover:text-[#CCFF00]">Bus Timetables</a>
           </div>
 
           <div className="col-span-2 flex flex-col gap-4 text-sm sm:col-span-1">
