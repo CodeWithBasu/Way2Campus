@@ -5,6 +5,7 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Bus, ArrowRight, ShieldCheck, User } from "lucide-react";
 import { toast } from "sonner";
+import Link from "next/link";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -102,7 +103,10 @@ export default function LoginPage() {
           </button>
         </form>
 
-        <div className="mt-8 text-center">
+        <div className="mt-8 text-center space-y-3">
+          <p className="text-sm text-zinc-400">
+            Don't have an account? <Link href="/signup" className="text-[#CCFF00] hover:underline">Sign up</Link>
+          </p>
           <p className="text-xs text-zinc-500">
             For demo purposes, use <strong className="text-white">driver / driver</strong>, <strong className="text-white">student / student</strong>, or <strong className="text-white">admin / admin</strong>
           </p>

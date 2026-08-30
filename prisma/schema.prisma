@@ -12,6 +12,8 @@ model User {
   role      String   // "STUDENT", "DRIVER", "ADMIN"
   name      String
   email     String?  @unique
+  phone     String?  @unique
+  busNumber String?
   password  String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

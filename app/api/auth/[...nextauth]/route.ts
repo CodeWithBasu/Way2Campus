@@ -26,8 +26,13 @@ export const authOptions: NextAuthOptions = {
           return { id: "3", name: "Demo Student", email: "student", role: "STUDENT" };
         }
 
-        const user = await prisma.user.findUnique({
-          where: { email: credentials.email },
+        const user = await prisma.user.findFirst({
+          where: { 
+            OR: [
+              { email: credentials.email },
+              { phone: credentials.email }
+            ]
+          },
         });
 
         if (user && user.password === credentials.password) {
@@ -36,7 +41,8 @@ export const authOptions: NextAuthOptions = {
             name: user.name,
             email: user.email,
             role: user.role,
-          };
+            busNumber: user.busNumber, // new field
+          } as any;
         }
         return null;
       },
@@ -46,12 +52,14 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.role = (user as any).role;
+        token.busNumber = (user as any).busNumber;
       }
       return token;
     },
     async session({ session, token }) {
       if (session.user) {
         (session.user as any).role = token.role;
+        (session.user as any).busNumber = token.busNumber;
       }
       return session;
     },

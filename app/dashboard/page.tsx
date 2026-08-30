@@ -19,7 +19,7 @@ export default function DashboardPage() {
       setUserData({
         name: session.user.name,
         role: ((session.user as any).role || "student").toLowerCase(),
-        busNumber: "15", // Default
+        busNumber: (session.user as any).busNumber || "15", // dynamic bus number
         avatar: getRandomProfileImage(),
         joinDate: new Date().toLocaleDateString(),
       });
