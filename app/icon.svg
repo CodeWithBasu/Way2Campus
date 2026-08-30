@@ -1,0 +1,26 @@
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Dark background with slight purple gradient -->
+  <rect width="256" height="256" rx="56" fill="url(#bg-gradient)"/>
+  
+  <!-- Outer glowing rings for radar effect -->
+  <circle cx="128" cy="100" r="70" stroke="#CCFF00" stroke-width="4" stroke-opacity="0.2"/>
+  <circle cx="128" cy="100" r="50" stroke="#CCFF00" stroke-width="8" stroke-opacity="0.4"/>
+  
+  <!-- Map Pin / Location Marker -->
+  <path d="M128 40C100.386 40 78 62.3858 78 90C78 126 128 190 128 190C128 190 178 126 178 90C178 62.3858 155.614 40 128 40Z" fill="#CCFF00"/>
+  
+  <!-- Inner Bus Silhouette -->
+  <path d="M110 64H146C149.314 64 152 66.6863 152 70V94C152 97.314 149.314 100 146 100H110C106.686 100 104 97.314 104 94V70C104 66.6863 106.686 64 110 64Z" fill="#0a0a0a"/>
+  <!-- Bus Wheels -->
+  <circle cx="116" cy="100" r="4" fill="#0a0a0a"/>
+  <circle cx="140" cy="100" r="4" fill="#0a0a0a"/>
+  <!-- Bus Window -->
+  <rect x="110" y="70" width="36" height="12" rx="2" fill="#CCFF00"/>
+
+  <defs>
+    <linearGradient id="bg-gradient" x1="0" y1="0" x2="256" y2="256" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0a0a0a"/>
+      <stop offset="1" stop-color="#200D42"/>
+    </linearGradient>
+  </defs>
+</svg>
