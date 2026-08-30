@@ -1,65 +1,10 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { LandingPage } from "@/components/LandingPage"
-import { Onboarding } from "../components/Onboarding"
-import { Dashboard } from "../components/Dashboard"
-import { locations, getRandomProfileImage } from "../utils/constants"
-
-type Step = "welcome" | "onboarding" | "main"
+import { LandingPage } from "@/components/LandingPage";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
-  const [step, setStep] = useState<Step>("welcome")
-  const [userData, setUserData] = useState({
-    name: "",
-    role: "",
-    busNumber: "",
-    avatar: "",
-    joinDate: "",
-  })
+  const router = useRouter();
 
-  const handleOnboardingComplete = (data: {
-    name: string
-    role: string
-    busNumber: string
-  }) => {
-    if (data.name && data.role && data.busNumber) {
-      const newUserData = {
-        ...data,
-        avatar: getRandomProfileImage(),
-        joinDate: new Date().toLocaleDateString(),
-      }
-      setUserData(newUserData)
-      setStep("main")
-    } else {
-      console.error("Invalid user data:", data)
-      setStep("onboarding")
-    }
-  }
-
-  const handleLogout = () => {
-    setStep("welcome")
-    setUserData({
-      name: "",
-      role: "",
-      busNumber: "",
-      avatar: "",
-      joinDate: "",
-    })
-  }
-
-  if (step === "welcome") {
-    return <LandingPage onStart={() => setStep("onboarding")} />
-  }
-
-  if (step === "onboarding") {
-    return <Onboarding onComplete={handleOnboardingComplete} />
-  }
-
-  if (userData.name) {
-    return <Dashboard userData={userData} onLogout={handleLogout} />
-  }
-
-  return <Onboarding onComplete={handleOnboardingComplete} />
+  return <LandingPage onStart={() => router.push("/login")} />;
 }
-
