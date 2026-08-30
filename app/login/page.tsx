@@ -104,7 +104,7 @@ export default function LoginPage() {
 
         <div className="mt-8 text-center">
           <p className="text-xs text-zinc-500">
-            For demo purposes, use <strong className="text-white">driver / driver</strong> or <strong className="text-white">admin / admin</strong>
+            For demo purposes, use <strong className="text-white">driver / driver</strong>, <strong className="text-white">student / student</strong>, or <strong className="text-white">admin / admin</strong>
           </p>
         </div>
       </div>

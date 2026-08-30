@@ -22,6 +22,9 @@ export const authOptions: NextAuthOptions = {
         if (credentials.email === "driver" && credentials.password === "driver") {
           return { id: "2", name: "Bus 15 Driver", email: "driver", role: "DRIVER" };
         }
+        if (credentials.email === "student" && credentials.password === "student") {
+          return { id: "3", name: "Demo Student", email: "student", role: "STUDENT" };
+        }
 
         const user = await prisma.user.findUnique({
           where: { email: credentials.email },
