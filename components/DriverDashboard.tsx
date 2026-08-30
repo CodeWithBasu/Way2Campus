@@ -54,9 +54,24 @@ export function DriverDashboard({ userData }: DriverDashboardProps) {
         },
         (error) => {
           console.error("Error getting location:", error)
+          // Fallback to mock location if PC/Browser blocks GPS
           setGpsActive(false)
+          toast.error("Real GPS failed. Using Mock Location for Demo.")
+          const mockLat = 20.5367 // DRIEMS Location
+          const mockLng = 85.9388
+          
+          setCurrentLocation({ lat: mockLat, lng: mockLng })
+          if (socketRef.current) {
+             socketRef.current.emit("updateLocation", {
+               busNumber: userData.busNumber,
+               lat: mockLat,
+               lng: mockLng,
+               timestamp: Date.now(),
+               speed: 0
+             })
+          }
         },
-        { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+        { enableHighAccuracy: false, timeout: 10000, maximumAge: 0 }
       )
     }
 
