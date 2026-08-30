@@ -81,7 +81,6 @@ export function LandingPage({ onStart }: LandingPageProps) {
                 <div className="mx-auto max-w-7xl">
                     <AnimatedLogoCloud />
                 </div>
-            </div>
         </section>
 
         {/* Our Fleet Section */}
