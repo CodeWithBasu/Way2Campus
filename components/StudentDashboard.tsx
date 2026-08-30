@@ -28,6 +28,9 @@ export function StudentDashboard({ userData }: StudentDashboardProps) {
   
   // Custom hook for notifications could be extracted, keeping it here for simplicity
   const [liveNotifications, setLiveNotifications] = useState<any[]>([])
+  const [currentStop, setCurrentStop] = useState<string>("Cuttack Square")
+
+  const routeStops = ["Cuttack Square", "Link Road", "College Square", "DRIEMS Campus"]
 
   useEffect(() => {
     socketRef.current = io()
@@ -41,6 +44,18 @@ export function StudentDashboard({ userData }: StudentDashboardProps) {
         type: data.type,
         title: data.title,
         content: data.content,
+        timestamp: data.timestamp
+      }, ...prev])
+    })
+
+    socketRef.current.on("currentStopUpdate", (data) => {
+      setCurrentStop(data.stop)
+      setNotificationCount(prev => prev + 1)
+      setLiveNotifications(prev => [{
+        id: Date.now(),
+        type: "status",
+        title: "Stop Reached",
+        content: `Bus has reached: ${data.stop}`,
         timestamp: data.timestamp
       }, ...prev])
     })
@@ -134,21 +149,26 @@ export function StudentDashboard({ userData }: StudentDashboardProps) {
           </h2>
           
           <div className="space-y-4 pl-4 relative before:absolute before:inset-0 before:ml-6 before:-translate-x-px before:h-full before:w-0.5 before:bg-zinc-800">
-            {["Cuttack Square", "Link Road", "College Square", "DRIEMS Campus"].map(
-              (point, index) => (
-                <div key={index} className="relative flex items-center gap-6">
-                  <div className={`w-4 h-4 rounded-full border-2 border-black z-10 flex-shrink-0 ${index === 0 ? "bg-[#CCFF00]" : "bg-zinc-600"}`}></div>
-                  <div className="flex-1 p-4 rounded-xl border border-zinc-800 bg-zinc-900/50 shadow-sm">
-                    <div className="flex items-center justify-between">
-                        <div className={`font-medium ${index === 0 ? "text-white" : "text-zinc-400"}`}>{point}</div>
-                        <span className="text-sm text-zinc-500">
-                            {index === 0 ? "Current" : `${8 + index}:00 AM`}
-                        </span>
+            {routeStops.map((point, index) => {
+                // Determine logic for passed, current, and future stops
+                const currentIndex = routeStops.indexOf(currentStop);
+                const isCurrent = point === currentStop;
+                const isPassed = index < currentIndex;
+
+                return (
+                  <div key={index} className={`relative flex items-center gap-6 ${isPassed ? "opacity-50" : ""}`}>
+                    <div className={`w-4 h-4 rounded-full border-2 border-black z-10 flex-shrink-0 ${isCurrent ? "bg-[#CCFF00]" : isPassed ? "bg-zinc-400" : "bg-zinc-800"}`}></div>
+                    <div className={`flex-1 p-4 rounded-xl border shadow-sm ${isCurrent ? "border-[#CCFF00]/30 bg-[#CCFF00]/5" : "border-zinc-800 bg-zinc-900/50"}`}>
+                      <div className="flex items-center justify-between">
+                          <div className={`font-medium ${isCurrent ? "text-[#CCFF00]" : "text-white"}`}>{point}</div>
+                          <span className="text-sm text-zinc-500">
+                              {isCurrent ? "Current" : isPassed ? "Passed" : `${8 + index}:00 AM`}
+                          </span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ),
-            )}
+                )
+            })}
           </div>
         </section>
       </div>

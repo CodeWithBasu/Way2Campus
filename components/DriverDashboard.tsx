@@ -100,6 +100,21 @@ export function DriverDashboard({ userData }: DriverDashboardProps) {
     }
   }
 
+  const stops = ["Cuttack Square", "Link Road", "College Square", "DRIEMS Campus"]
+  const [currentStop, setCurrentStop] = useState<string>("Cuttack Square")
+
+  const handleStopUpdate = (stop: string) => {
+    setCurrentStop(stop)
+    if (socketRef.current) {
+      socketRef.current.emit("updateCurrentStop", {
+        busNumber: userData.busNumber,
+        stop: stop,
+        timestamp: new Date().toLocaleTimeString()
+      })
+      toast.success(`Current stop updated to: ${stop}`)
+    }
+  }
+
   return (
     <div className="min-h-screen bg-black relative overflow-hidden">
       <MouseMoveEffect />
@@ -153,6 +168,28 @@ export function DriverDashboard({ userData }: DriverDashboardProps) {
               <AlertCircle className="h-6 w-6 text-red-500 mr-4" />
               <span className="text-lg">Emergency</span>
             </Button>
+          </div>
+        </section>
+
+        <section className="pt-8">
+          <h2 className="text-white font-medium text-lg mb-4 text-center">Route Progress</h2>
+          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 space-y-2">
+            {stops.map((stop) => (
+              <Button
+                key={stop}
+                onClick={() => handleStopUpdate(stop)}
+                variant="outline"
+                className={`w-full justify-start h-12 transition-all ${
+                  currentStop === stop 
+                  ? "bg-[#CCFF00]/10 border-[#CCFF00] text-[#CCFF00]" 
+                  : "bg-black border-zinc-800 text-zinc-400 hover:text-white"
+                }`}
+              >
+                <MapPin className={`mr-3 h-5 w-5 ${currentStop === stop ? "text-[#CCFF00]" : "text-zinc-600"}`} />
+                {stop}
+                {currentStop === stop && <span className="ml-auto text-xs font-bold uppercase">Current</span>}
+              </Button>
+            ))}
           </div>
         </section>
 
