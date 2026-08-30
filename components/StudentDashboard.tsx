@@ -154,6 +154,9 @@ export function StudentDashboard({ userData }: StudentDashboardProps) {
                 const currentIndex = routeStops.indexOf(currentStop);
                 const isCurrent = point === currentStop;
                 const isPassed = index < currentIndex;
+                
+                // Realistic timings to reach campus before 9:45 AM
+                const timings = ["08:30 AM", "08:50 AM", "09:15 AM", "09:35 AM"];
 
                 return (
                   <div key={index} className={`relative flex items-center gap-6 ${isPassed ? "opacity-50" : ""}`}>
@@ -161,8 +164,8 @@ export function StudentDashboard({ userData }: StudentDashboardProps) {
                     <div className={`flex-1 p-4 rounded-xl border shadow-sm ${isCurrent ? "border-[#CCFF00]/30 bg-[#CCFF00]/5" : "border-zinc-800 bg-zinc-900/50"}`}>
                       <div className="flex items-center justify-between">
                           <div className={`font-medium ${isCurrent ? "text-[#CCFF00]" : "text-white"}`}>{point}</div>
-                          <span className="text-sm text-zinc-500">
-                              {isCurrent ? "Current" : isPassed ? "Passed" : `${8 + index}:00 AM`}
+                          <span className="text-sm text-zinc-500 font-medium">
+                              {isCurrent ? "Current" : isPassed ? "Passed" : timings[index]}
                           </span>
                       </div>
                     </div>
