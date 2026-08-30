@@ -21,6 +21,25 @@ interface DriverDashboardProps {
   }
 }
 
+const ROUTE_STOPS_GEO = [
+  { name: "Cuttack Square", lat: 20.4625, lng: 85.8828 },
+  { name: "Link Road", lat: 20.4497, lng: 85.8943 },
+  { name: "College Square", lat: 20.4578, lng: 85.9221 },
+  { name: "DRIEMS Campus", lat: 20.5367, lng: 85.9388 }
+];
+
+function getDistanceKm(lat1: number, lon1: number, lat2: number, lon2: number) {
+  const R = 6371; // Earth radius in km
+  const dLat = (lat2 - lat1) * (Math.PI / 180);
+  const dLon = (lon2 - lon1) * (Math.PI / 180); 
+  const a = 
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) * 
+    Math.sin(dLon / 2) * Math.sin(dLon / 2); 
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)); 
+  return R * c; 
+}
+
 export function DriverDashboard({ userData }: DriverDashboardProps) {
   const [status, setStatus] = useState<string>("On Route")
   const socketRef = useRef<Socket | null>(null)
@@ -50,16 +69,39 @@ export function DriverDashboard({ userData }: DriverDashboardProps) {
       watchIdRef.current = navigator.geolocation.watchPosition(
         (position) => {
           setGpsActive(true)
-          setCurrentLocation({ lat: position.coords.latitude, lng: position.coords.longitude })
+          const newLat = position.coords.latitude;
+          const newLng = position.coords.longitude;
+          setCurrentLocation({ lat: newLat, lng: newLng })
           
           if (socketRef.current) {
             socketRef.current.emit("updateLocation", {
               busNumber: userData.busNumber,
-              lat: position.coords.latitude,
-              lng: position.coords.longitude,
+              lat: newLat,
+              lng: newLng,
               timestamp: position.timestamp,
               speed: position.coords.speed
             })
+            
+            // Automatic Route Progress (Geofencing within 500 meters)
+            for (const stop of ROUTE_STOPS_GEO) {
+              const dist = getDistanceKm(newLat, newLng, stop.lat, stop.lng);
+              if (dist < 0.5) { 
+                // Only update if it's a new stop to avoid spamming
+                setCurrentStop((prevStop) => {
+                  if (prevStop !== stop.name) {
+                    socketRef.current?.emit("updateCurrentStop", {
+                      busNumber: userData.busNumber,
+                      stop: stop.name,
+                      timestamp: new Date().toLocaleTimeString()
+                    })
+                    toast.success(`Automatically reached: ${stop.name}`)
+                    return stop.name;
+                  }
+                  return prevStop;
+                });
+                break;
+              }
+            }
           }
         },
         (error) => {
@@ -78,6 +120,26 @@ export function DriverDashboard({ userData }: DriverDashboardProps) {
                timestamp: Date.now(),
                speed: 0
              })
+             
+             // Check geofence for mock location
+             for (const stop of ROUTE_STOPS_GEO) {
+              const dist = getDistanceKm(mockLat, mockLng, stop.lat, stop.lng);
+              if (dist < 0.5) { 
+                setCurrentStop((prevStop) => {
+                  if (prevStop !== stop.name) {
+                    socketRef.current?.emit("updateCurrentStop", {
+                      busNumber: userData.busNumber,
+                      stop: stop.name,
+                      timestamp: new Date().toLocaleTimeString()
+                    })
+                    toast.success(`Automatically reached: ${stop.name}`)
+                    return stop.name;
+                  }
+                  return prevStop;
+                });
+                break;
+              }
+            }
           }
         },
         { enableHighAccuracy: false, timeout: 10000, maximumAge: 0 }
