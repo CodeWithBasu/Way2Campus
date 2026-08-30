@@ -32,11 +32,9 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     // Connect to WebSocket server
-    const newSocket = io("http://localhost:3000", {
-      path: "/api/socketio",
-    });
+    const newSocket = io();
 
-    newSocket.on("locationUpdate", (data) => {
+    newSocket.on("adminLocationUpdate", (data) => {
       setActiveBuses((prev: any) => ({
         ...prev,
         [data.busNumber]: data

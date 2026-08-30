@@ -33,6 +33,7 @@ app.prepare().then(() => {
     socket.on("updateLocation", (data) => {
       // data: { busNumber, lat, lng, timestamp }
       io.to(`bus-${data.busNumber}`).emit("locationUpdate", data);
+      socket.broadcast.emit("adminLocationUpdate", data); // For master dashboard
     });
 
     // Receive status updates (Delay, Puncture, etc) and broadcast
