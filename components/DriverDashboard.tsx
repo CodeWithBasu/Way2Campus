@@ -28,14 +28,24 @@ export function DriverDashboard({ userData }: DriverDashboardProps) {
   const [gpsActive, setGpsActive] = useState(false)
   const [currentLocation, setCurrentLocation] = useState<{lat: number, lng: number} | null>(null)
 
+  const [isSharing, setIsSharing] = useState(false)
+  const [tripDirection, setTripDirection] = useState<"To College" | "Return Home">("To College")
+
   useEffect(() => {
     // Connect to Socket.IO server
     socketRef.current = io()
-    
-    // Join the bus room
     socketRef.current.emit("joinBus", userData.busNumber)
 
-    // Start tracking GPS location
+    return () => {
+      stopTracking()
+      if (socketRef.current) socketRef.current.disconnect()
+    }
+  }, [userData.busNumber])
+
+  const startTracking = () => {
+    setIsSharing(true)
+    handleStatusUpdate(`Trip Started (${tripDirection})`, "status")
+
     if ("geolocation" in navigator) {
       watchIdRef.current = navigator.geolocation.watchPosition(
         (position) => {
@@ -54,10 +64,9 @@ export function DriverDashboard({ userData }: DriverDashboardProps) {
         },
         (error) => {
           console.error("Error getting location:", error)
-          // Fallback to mock location if PC/Browser blocks GPS
           setGpsActive(false)
           toast.error("Real GPS failed. Using Mock Location for Demo.")
-          const mockLat = 20.5367 // DRIEMS Location
+          const mockLat = 20.5367 
           const mockLng = 85.9388
           
           setCurrentLocation({ lat: mockLat, lng: mockLng })
@@ -74,16 +83,17 @@ export function DriverDashboard({ userData }: DriverDashboardProps) {
         { enableHighAccuracy: false, timeout: 10000, maximumAge: 0 }
       )
     }
+  }
 
-    return () => {
-      if (watchIdRef.current !== null) {
-        navigator.geolocation.clearWatch(watchIdRef.current)
-      }
-      if (socketRef.current) {
-        socketRef.current.disconnect()
-      }
+  const stopTracking = () => {
+    setIsSharing(false)
+    setGpsActive(false)
+    if (watchIdRef.current !== null) {
+      navigator.geolocation.clearWatch(watchIdRef.current)
+      watchIdRef.current = null
     }
-  }, [userData.busNumber])
+    handleStatusUpdate("Trip Ended - Reached Destination", "status")
+  }
 
   const handleStatusUpdate = (newStatus: string, type: string) => {
     setStatus(newStatus)
@@ -133,7 +143,50 @@ export function DriverDashboard({ userData }: DriverDashboardProps) {
 
       <div className="pt-24 px-4 space-y-6 pb-20 relative z-10 max-w-md mx-auto">
         <section>
-          <h2 className="text-white font-medium text-lg mb-4 text-center">Quick Status Updates</h2>
+          <h2 className="text-white font-medium text-lg mb-4 text-center">Trip Control</h2>
+          <Card className="bg-zinc-900 border-zinc-800 p-4 space-y-4">
+            {!isSharing ? (
+              <div className="space-y-4">
+                <div className="flex bg-black p-1 rounded-xl">
+                  <button 
+                    onClick={() => setTripDirection("To College")}
+                    className={`flex-1 py-2 text-sm font-medium rounded-lg transition-colors ${tripDirection === "To College" ? "bg-[#CCFF00] text-black" : "text-zinc-400 hover:text-white"}`}
+                  >
+                    To College
+                  </button>
+                  <button 
+                    onClick={() => setTripDirection("Return Home")}
+                    className={`flex-1 py-2 text-sm font-medium rounded-lg transition-colors ${tripDirection === "Return Home" ? "bg-[#CCFF00] text-black" : "text-zinc-400 hover:text-white"}`}
+                  >
+                    Return Home
+                  </button>
+                </div>
+                <Button 
+                  onClick={startTracking}
+                  className="w-full bg-green-500 hover:bg-green-600 text-white h-14 text-lg font-bold"
+                >
+                  Start Sharing Location
+                </Button>
+              </div>
+            ) : (
+              <div className="space-y-4 text-center">
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#CCFF00]/10 text-[#CCFF00] rounded-full border border-[#CCFF00]/20 font-medium">
+                  <div className="h-2 w-2 rounded-full bg-[#CCFF00] animate-pulse" />
+                  Trip Active: {tripDirection}
+                </div>
+                <Button 
+                  onClick={stopTracking}
+                  className="w-full bg-red-500 hover:bg-red-600 text-white h-14 text-lg font-bold"
+                >
+                  Reached Destination (Stop)
+                </Button>
+              </div>
+            )}
+          </Card>
+        </section>
+
+        <section>
+          <h2 className="text-white font-medium text-lg mb-4 text-center mt-6">Quick Status Updates</h2>
           <p className="text-zinc-400 text-sm mb-8 text-center">Tap to instantly notify all students tracking Bus {userData.busNumber}</p>
           
           <div className="grid grid-cols-1 gap-4">
